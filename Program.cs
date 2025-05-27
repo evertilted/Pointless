@@ -7,9 +7,16 @@ namespace Pointless
     { 
         public static void Main()
         {
-            using (var game = new GameContext(GameContextConstants.DefaultClientSize.X, GameContextConstants.DefaultClientSize.Y, GameContextConstants.WindowName))
+            try
             {
-                game.Run();
+                using (var game = new GameContext(GameContextConstants.DefaultClientSize.X, GameContextConstants.DefaultClientSize.Y, GameContextConstants.WindowName))
+                {
+                    game.Run();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }

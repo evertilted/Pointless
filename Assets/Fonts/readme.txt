@@ -1,0 +1,1 @@
+If you want to add a new font, please create a separate folder and put it (WITH A LICENSE DOCUMENT IF REQUIRED) in there

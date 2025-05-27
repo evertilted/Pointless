@@ -1,14 +1,18 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+using Pointless.Constants;
+using Pointless.Game.TextRenderer;
 
 namespace Pointless.Game
 {
     /// <summary>
-    /// The context and control center of the game
+    /// The context - top level of control over game
     /// </summary>
     public class GameContext : GameWindow
     {
+        private ScreenText _text;
+
         public GameContext(int width, int height, string title) :
             base(GameWindowSettings.Default, new NativeWindowSettings() { ClientSize = (width, height), Title = title })
         { }
@@ -16,6 +20,16 @@ namespace Pointless.Game
         protected override void OnLoad()
         {
             base.OnLoad();
+            GL.ClearColor(GameContextConstants.ClearColor);
+
+            try
+            {
+                _text = new ScreenText();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -26,6 +40,9 @@ namespace Pointless.Game
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
+
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            SwapBuffers();
         }
 
         protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
