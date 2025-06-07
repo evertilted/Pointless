@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using Pointless.Constants;
+using Pointless.Game.Constants;
 using Pointless.Game.Text;
 
 namespace Pointless.Game

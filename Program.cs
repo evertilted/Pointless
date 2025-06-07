@@ -1,5 +1,5 @@
-﻿using Pointless.Constants;
-using Pointless.Game;
+﻿using Pointless.Game;
+using Pointless.Game.Constants;
 
 namespace Pointless
 {

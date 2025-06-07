@@ -1,5 +1,5 @@
-﻿using Pointless.Constants;
-using Pointless.Exceptions;
+﻿using Pointless.Game.Constants;
+using Pointless.Game.Exceptions;
 using Pointless.Game.Text.Enums;
 
 namespace Pointless.Game.Text
@@ -34,7 +34,7 @@ namespace Pointless.Game.Text
              */
             byte[] data = File.ReadAllBytes(TextRendererConstants.DebugFontPath);
 
-            uint tableCount = (uint)(data[4] << 8 | data[5]);
+            UInt16 tableCount = ByteReader.ReadUInt16(data, 4);
             const int subtableOffset = 12; // the subtable consists of 12 bytes - so the table directory starts at data[12]
             const int tableDirectoryOffset = 16; // each table directory entry consists of 16 bytes
 
@@ -42,7 +42,7 @@ namespace Pointless.Game.Text
             for (int i = 0; i < tableCount; i++)
             {
                 int currentByte = subtableOffset + tableDirectoryOffset * i;
-                uint tag = (uint)(data[currentByte + 0] << 24 | data[currentByte + 1] << 16 | data[currentByte + 2] << 8 | data[currentByte + 3]);
+                UInt32 tag = ByteReader.ReadUInt32(data, currentByte);
 
 ;               if (tag == cmapCode)
                 {
@@ -62,22 +62,22 @@ namespace Pointless.Game.Text
         {
             /* PLEASE NOTE that the 'start' variable is where the cmap entry in the table directory located.
              * declared below 'cmapBegin' is where the cmap table actually starts */
-            int cmapBegin = (int)(data[start + 8] << 24 | data[start + 9] << 16 | data[start + 10] << 8 | data[start + 11]);
-            int cmapLength = (int)(data[start + 12] << 24 | data[start + 13] << 16 | data[start + 14] << 8 | data[start + 15]);
+            UInt32 cmapBegin = ByteReader.ReadUInt32(data, start + 8);
+            UInt32 cmapLength = ByteReader.ReadUInt32(data, start + 12);
 
-            int subtableCount = (int)(data[cmapBegin + 2] << 8 | data[cmapBegin + 3]);
+            UInt16 subtableCount = ByteReader.ReadUInt16(data, (int)cmapBegin + 2);
             int supportedTableOffset = -1;
 
             for (int i = 0; i < subtableCount; i++)
             {
                 int indexShift = i * 8;
-                int platformId = (int)(data[cmapBegin + 4 + indexShift] << 8 | data[cmapBegin + 5 + indexShift]);
-                int platformSpecificId = (int)(data[cmapBegin + 6 + indexShift] << 8 | data[cmapBegin + 7 + indexShift]);
+                UInt16 platformId = ByteReader.ReadUInt16(data, (int)cmapBegin + 4 + indexShift);
+                UInt16 platformSpecificId = ByteReader.ReadUInt16(data, (int)cmapBegin + 6 + indexShift);
 
                 if (platformId == (int)Enum_SupportedPlatformIds.Microsoft &&
                     platformSpecificId == (int)Enum_SupportedPlatformSpecificIds.UnicodeBMPOnly_UCS2)
                 {
-                    supportedTableOffset = (int)(data[cmapBegin + 8 + indexShift] << 24 | data[cmapBegin + 9 + indexShift] << 16 | data[cmapBegin + 10 + indexShift] << 8 | data[cmapBegin + 11 + indexShift]);
+                    supportedTableOffset = (int)ByteReader.ReadUInt32(data, (int)cmapBegin + 8 + indexShift);
                 }
             }
 
@@ -86,7 +86,7 @@ namespace Pointless.Game.Text
                 throw new FontUnsupportedException("Font platform is unsupported");
             }
 
-            uint format = (uint)(data[cmapBegin + supportedTableOffset] << 8 | data[cmapBegin + supportedTableOffset + 1]);
+            UInt16 format = ByteReader.ReadUInt16(data, (int)cmapBegin + supportedTableOffset);
             if (format != (int)Enum_SupportedFormats.TwoByte)
             {
                 throw new FontUnsupportedException("Font format is unsupported");

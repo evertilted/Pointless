@@ -1,4 +1,4 @@
-﻿namespace Pointless.Exceptions
+﻿namespace Pointless.Game.Exceptions
 {
     /// <summary>
     /// Indicates an error that occured on reading a TTF file
