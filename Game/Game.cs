@@ -2,7 +2,7 @@
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using Pointless.Constants;
-using Pointless.Game.TextRenderer;
+using Pointless.Game.Text;
 
 namespace Pointless.Game
 {
@@ -11,7 +11,7 @@ namespace Pointless.Game
     /// </summary>
     public class GameContext : GameWindow
     {
-        private ScreenText _text;
+        private Text.TextRenderer _text;
 
         public GameContext(int width, int height, string title) :
             base(GameWindowSettings.Default, new NativeWindowSettings() { ClientSize = (width, height), Title = title })
@@ -24,7 +24,7 @@ namespace Pointless.Game
 
             try
             {
-                _text = new ScreenText();
+                _text = new Text.TextRenderer();
             }
             catch
             {

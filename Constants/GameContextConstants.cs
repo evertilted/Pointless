@@ -4,7 +4,7 @@ using OpenTK.Mathematics;
 namespace Pointless.Constants
 {
     /// <summary>
-    /// constants for creating and managing the game context
+    /// The constants for <see cref="Pointless.Game.GameContext"/>
     /// </summary>
     internal static class GameContextConstants
     {

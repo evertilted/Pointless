@@ -1,7 +1,7 @@
 ﻿namespace Pointless.Constants
 {
     /// <summary>
-    /// The constants used in the text rendering mechanism
+    /// The constants used in <see cref="Pointless.Game.Text.TextRenderer"/>
     /// </summary>
     internal static class TextRendererConstants
     {
